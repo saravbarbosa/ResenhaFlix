@@ -1,5 +1,5 @@
 # 📽️ ResenhaFlix
-Projeto Web 2 - IFPE. Acesse o blog [aqui](#).
+Projeto Web 2 - IFPE. Acesse o site [aqui](#).
 
 - Blog sobre resenhas de filmes
 - Dupla: Matias Cordeiro e Sara Barbosa
