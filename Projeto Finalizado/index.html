@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ResenhaFlix</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <br>
+    <br>
+    <div style="text-align: center; cursor: pointer;"><img src="imagens/ResenhaFlix.png" id="banner" height="110">
+    </div>
+    <br>
+    
+    <div style='text-align:center'><input class="add" type="text" name="titulo" id="texto" size="40" value="" placeholder="Digite um título..." style="padding: 15px; border: none; border-radius: 4px; font-family: arial; background-color: #dbd6d6; color: #282525; width: 35%">
+    </div>
+    
+    <div><input type="submit" value="Enviar" class="botao" style="background-color: #ff0000; padding: 15px; border: none; border-radius: 4px; width: 7%; color: white; font-family: arial; cursor: pointer" onclick="addText();">
+    </div>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <script>
+
+        function deletar(p) {
+            p = p.id.slice(2)
+            document.getElementById(p).remove()
+        }
+        //CODIGO QUE TRAZ O VALOR PARA O CAMPO
+        function edita(e) {
+
+            var text = document.getElementById("texto")
+            var valo = text.value;
+
+            e = e.id.slice(2)
+
+            var eddie = document.getElementById(e)
+
+            text.value = eddie.textContent.slice(0,-1)
+
+            text.className = e
+        }
+
+        function addText() {
+
+            var text = document.getElementById("texto")
+            var valo = text.value;
+            if (text.className == "add"){
+            var pai = document.body;
+                
+            var divs = document.getElementsByTagName("div");
+
+            var divDom = document.createElement("div")
+            divDom.id = "div" + (divs.length + 1)
+            divDom.style = "display: flex; gap: 12px;"
+
+
+            divDom.innerHTML = '<h3 class="barra">' + valo + '</h3> <a onclick=""><img src="imagens/editar.png" class="editar" onclick="edita(this)" id="aD' + (divDom.id) + '" height="25"></a><a onclick="deletar(this)" id = "aD' + (divDom.id) + '"><img src="imagens/excluir.png" class="excluir" height="27"></a>'
+
+            text.value = ""
+            pai.appendChild(divDom);
+            } else{
+                var idDiv = text.className
+                var divEddie = document.getElementById(idDiv)
+                divEddie.innerHTML = '<h3 class="barra">' + text.value + '</h3> <a onclick=""><img src="imagens/editar.png" class="editar" onclick="edita(this)" id="aD' + (idDiv) + '" height="25"></a><a onclick="deletar(this)" id = "aD' + (idDiv) + '"><img src="imagens/excluir.png" class="excluir" height="27"></a>'
+
+                pai = document.body
+                
+                text.className = "add" 
+                text.value = ""
+                                  
+            }
+        };
+    </script>
+</body>
+</html>

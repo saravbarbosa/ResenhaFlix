@@ -1,0 +1,41 @@
+body{
+    background-color: #000000;
+}
+
+#texto{
+    float: left; 
+    margin: 30px;
+    margin-left: 400px;
+}
+
+.botao {
+    float: right;
+    margin: 30px;
+    margin-right: 330px;
+}
+
+.barra {
+    background-color: #232323; 
+    margin: 20px;
+    padding: 13px; 
+    border: none; 
+    border-radius: 4px; 
+    width: 35%; 
+    color: #dbd6d6; 
+    font-family: arial; 
+    cursor: pointer; 
+    font-size: 17px;
+    margin-left: 400px;
+}
+.editar {
+    float: right;
+    margin: 25px;
+    margin-left: 55px;
+    cursor: pointer;
+}
+.excluir {
+    float: right;
+    margin: 25px;
+    margin-left: 0px;
+    cursor: pointer;
+}
