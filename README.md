@@ -1,6 +1,6 @@
 # 📽️ `ResenhaFlix`
 - Projeto Web 2 - IFPE. Acesse o site [aqui](#).
-- Blog sobre resenhas de filmes
+- Blog sobre resenhas de filmes.
 
 ## 🍿 `Tecnologias utilizadas`
 - HTML5
