@@ -1,5 +1,5 @@
 # 📽️ `ResenhaFlix`
-- Projeto Web 2 - IFPE. Acesse o site [aqui](#).
+- Projeto Web 2 - IFPE. Acesse o site [aqui](https://saravbarbosa.github.io/ResenhaFlix/).
 - Blog sobre resenhas de filmes
 
 ## 🍿 `Tecnologias utilizadas`
