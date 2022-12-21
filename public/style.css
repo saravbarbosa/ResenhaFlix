@@ -1,0 +1,118 @@
+body{
+    background-color: #000000;
+    font-family: arial;
+}
+#banner{
+    cursor: pointer;
+}
+#texto{
+    float: left; 
+    margin: 30px;
+    margin-left: 400px;
+    padding: 15px; 
+    border: none; 
+    border-radius: 4px; 
+    font-family: arial; 
+    background-color: #dbd6d6; 
+    color: #282525; 
+    width: 35%;
+}
+#botao {
+    float: right;
+    margin: 30px;
+    margin-right: 330px;
+    background-color: #ff0000; 
+    padding: 15px; 
+    border: none; 
+    border-radius: 4px; 
+    width: 7%; 
+    color: white; 
+    font-family: arial; 
+    cursor: pointer;
+}
+.barra {
+    background-color: #232323; 
+    margin: 20px;
+    padding: 13px; 
+    border: none; 
+    border-radius: 4px; 
+    width: 35%; 
+    color: #dbd6d6; 
+    font-family: arial; 
+    cursor: pointer; 
+    font-size: 17px;
+    margin-left: 400px;
+}
+.editar {
+    float: right;
+    margin: 25px;
+    margin-left: 55px;
+    cursor: pointer;
+}
+.excluir {
+    float: right;
+    margin: 25px;
+    margin-left: 0px;
+    cursor: pointer;
+}
+
+.botoes-inicio {
+    text-decoration: none;
+    background-color: #ff0000; 
+    padding: 15px; 
+    border: none; 
+    border-radius: 4px; 
+    width: 8.8%; 
+    color: white; 
+    font-family: arial; 
+    cursor: pointer;
+    size: 14px;
+}
+
+.cadastrofilme-pag {
+    color: #dbd6d6;
+    line-height: 30px;
+}
+#ano1, #ano2, #ano3, #ano4, #ano5 {
+    color:#dbd6d6;
+}
+#buscar-titulo, .adicionar {
+    text-align: left;
+    padding: 15px;
+    border: none; border-radius: 4px; font-family: arial;
+    background-color: #232323;  
+    color: white
+}
+#generos, #generosx {
+    background-color: #232323; 
+    text-align: left;
+    padding: 15px;
+    width: 325.5px;
+    border: none; border-radius: 4px; font-family: arial;
+    background-color: #232323;  
+    color: white
+}
+.botao-buscar {
+    background-color: #ff0000; 
+    padding: 15px; 
+    border: none; 
+    border-radius: 4px; 
+    width: 8.8%; 
+    color: white; 
+    font-family: arial; 
+    cursor: pointer
+}
+
+.barra2 {
+    background-color: #232323; 
+    margin: 20px;
+    padding: 13px; 
+    border: none; 
+    border-radius: 4px; 
+    width: 43%; 
+    color: #dbd6d6; 
+    font-family: arial; 
+    cursor: pointer; 
+    font-size: 17px;
+    margin-left: 400px;
+}
