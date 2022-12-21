@@ -3,17 +3,48 @@ const app = express();
 const port = 8081;
 const bodyParser = require('body-parser');
 var urlEncodedParser = bodyParser.urlencoded({extended:false})
+
+// const sequelize = require('sequelize')
+// const sequelizeInstance = new sequelize('lojinha', 'root', 'aluno',{
+// 	host: 'localhost',
+// 	dialect: 'mysql'
+// });
+
+// sequelizeInstance.authenticate().then( function() {
+// 	console.log("conectado")
+// }).catch(function(erro){
+// 	console.log(erro)
+// })
+
+// const Produto = sequelizeInstance.define('produto',{
+// 	codigo: {
+// 		type: sequelize.STRING
+// 	},
+// 	nome: {
+// 		type: sequelize.STRING
+// 	},
+// 	marca: {
+// 		type: sequelize.STRING
+// 	},
+// 	preco: {
+// 		type: sequelize.DOUBLE
+// 	},
+// }
+// )
+
 app.engine('html', require('ejs').renderFile);
 app.set('view engine', 'html');
 app.set('views', __dirname);
+
 const fs = require('fs');
-app.use(express.static('public'))
+
+app.use(express.static(__dirname +'/public'))
 
 app.get("/" , (req, res) => {
 	res.sendFile(__dirname + "/" + "public/inicio.html")
 })
 
-app.get("/resenha" , (req, res) => {
+app.get("/resenhaDom" , (req, res) => {
 	res.sendFile(__dirname + "/" + "public/resenha.html")
 })
 
@@ -21,7 +52,7 @@ app.get("/cadResenha", (req, res) => {
     res.sendFile(__dirname + "/"+ "public/adicionar.html")
 })
 
-app.post("/cadResenha", urlEncodedParser, (req, res) => {
+app.post("/Resenha", urlEncodedParser, (req, res) => {
     var filme = req.body.filme
     var resenha = req.body.resenha
     var genero = req.body.genero
@@ -36,8 +67,6 @@ app.post("/cadResenha", urlEncodedParser, (req, res) => {
 		if (erro)
 			throw "Deu algum erro: "+erro;
 		
-
-        
 		var meuBD = JSON.parse(texto);
          
         resenhas.id = parseInt(meuBD.resenhas.length) + 1 
@@ -59,14 +88,13 @@ app.post("/cadResenha", urlEncodedParser, (req, res) => {
 })
 
 app.get('/buscaResenha',(req,res)=>{
-	
     res.sendFile(__dirname +"/"+"/public/buscar.html")
 });
 
-app.post('/buscaResenha',urlEncodedParser, (req,res) => {
-    var filme = req.body.filme
-    var genero = req.body.genero
-    var ano = req.body.ano
+app.get('/Resenha', (req,res) => {
+    var filme = req.query.filme
+    var genero = req.query.genero
+    var ano = req.query.ano
 
     filme = filme.replaceAll(" ","")
 	genero = genero.replaceAll(" ", "")
@@ -75,8 +103,10 @@ app.post('/buscaResenha',urlEncodedParser, (req,res) => {
 
 		
 	fs.readFile('bd.json','utf8',(erro, texto)=>{
+		
 		if (erro)
 			throw "Deu algum erro: "+erro;
+		
 		var meuBD = JSON.parse(texto);
 		var resenhas = meuBD.resenhas;
 		
@@ -104,17 +134,22 @@ app.post('/buscaResenha',urlEncodedParser, (req,res) => {
 			var encontrado = resenhas.filter(p => p.ano.replaceAll(" ","").toLowerCase().includes(ano.replaceAll(" ","").toLowerCase()));
 		}
 		var exibicao = ""
+		var filmes = []
 		for(var i=0; i < encontrado.length;i++){
-			exibicao+= "\n"
+			
 			exibicao+= "Titulo: "+encontrado[i].filme + " ";
 			exibicao+= "Resenha: "+encontrado[i].resenha + " ";
 			exibicao+= "Genero: "+encontrado[i].genero + " ";
 			exibicao+= "Diretor: "+encontrado[i].diretor + " ";
-			exibicao+= "Ano: "+encontrado[i].ano +  "\n"
+			exibicao+= "Ano: "+encontrado[i].ano +  ""
+
+			filmes.push(exibicao)
+			exibicao = ""
+
 			
 		}
 		
-		res.render(__dirname + "/public/busca-realizada.html", {exibicao:exibicao});
+		res.render(__dirname + "/public/busca-realizada.html",  {filme :filmes});
 	})
 })
 
