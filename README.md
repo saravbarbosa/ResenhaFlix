@@ -4,7 +4,7 @@
 
 <h2 id="sobre"> 📋 Sobre o projeto</h2>
 
-- Projeto Web 2 - IFPE.
+- Projeto da disciplina de Web 2, do IFPE.
 - Blog sobre resenhas de filmes
 
 <h2 id="aplicacao"> 🍿 Rodando a aplicação</h2>
