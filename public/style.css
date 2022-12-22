@@ -73,10 +73,7 @@ body{
     color: #dbd6d6;
     line-height: 30px;
 }
-#ano1, #ano2, #ano3, #ano4, #ano5 {
-    color:#dbd6d6;
-}
-#buscar-titulo, .adicionar {
+#buscar-titulo, .adicionar, #ano1, #ano2 {
     text-align: left;
     padding: 15px;
     border: none; border-radius: 4px; font-family: arial;
@@ -115,4 +112,13 @@ body{
     cursor: pointer; 
     font-size: 17px;
     margin-left: 400px;
+}
+#resenhas {
+    color: #dbd6d6;
+    text-align: left;
+    padding: 15px;
+    border: none; border-radius: 4px; font-family: arial;
+    background-color: #232323;  
+    color: white;
+    resize: none
 }
