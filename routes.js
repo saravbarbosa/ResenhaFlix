@@ -4,39 +4,46 @@ const port = 8081;
 const bodyParser = require('body-parser');
 var urlEncodedParser = bodyParser.urlencoded({extended:false})
 
-// const sequelize = require('sequelize')
-// const sequelizeInstance = new sequelize('lojinha', 'root', 'aluno',{
-// 	host: 'localhost',
-// 	dialect: 'mysql'
-// });
-
-// sequelizeInstance.authenticate().then( function() {
-// 	console.log("conectado")
-// }).catch(function(erro){
-// 	console.log(erro)
-// })
-
-// const Produto = sequelizeInstance.define('produto',{
-// 	codigo: {
-// 		type: sequelize.STRING
-// 	},
-// 	nome: {
-// 		type: sequelize.STRING
-// 	},
-// 	marca: {
-// 		type: sequelize.STRING
-// 	},
-// 	preco: {
-// 		type: sequelize.DOUBLE
-// 	},
-// }
-// )
-
 app.engine('html', require('ejs').renderFile);
 app.set('view engine', 'html');
 app.set('views', __dirname);
 
 const fs = require('fs');
+
+const Sequelize = require('sequelize')
+
+const sequelizeInstance = new Sequelize('resenhaflix', 'root', 'root', {
+	host: 'localhost',
+	dialect: 'mysql'
+  })
+  sequelizeInstance.authenticate().then(function () {
+	console.log("Conectado!!")
+  }).catch(function (erro) {
+	console.log("Erro ao conectar: " + erro)
+  })
+
+  const resenha = sequelizeInstance.define('resenha', {
+	codigo: {
+	  type: Sequelize.INTEGER,
+	  autoIncrement: true,
+	  primaryKey: true
+	},
+	resenha: {
+	  type: Sequelize.STRING
+	},
+	genero: {
+	  type: Sequelize.STRING
+	},
+	diretor: {
+	  type: Sequelize.STRING
+	},
+	ano: {
+	  type: Sequelize.DATE
+	}
+  });
+  resenha.sync()
+  
+
 
 app.use(express.static(__dirname +'/public'))
 
@@ -54,37 +61,44 @@ app.get("/cadResenha", (req, res) => {
 
 app.post("/Resenha", urlEncodedParser, (req, res) => {
     var filme = req.body.filme
-    var resenha = req.body.resenha
+    var nresenha = req.body.resenha
     var genero = req.body.genero
 	var diretor = req.body.diretor
     var ano = req.body.ano
-    var id = 0
+   // var id = 0
 
-    var resenhas = {id: id,filme: filme, resenha: resenha, genero: genero, diretor: diretor, ano: ano}
 
-    fs.readFile('bd.json','utf8',(erro, texto)=>{
-        console.log(texto)
-		if (erro)
-			throw "Deu algum erro: "+erro;
+    //var resenhas = {id: id,filme: filme, resenha: nresenha, genero: genero, diretor: diretor, ano: ano}
+
+	const resenhass = resenha.build({
+		filme: filme, resenha: nresenha, genero: genero, diretor: diretor, ano: ano
+	})
+	resenhass.save()
+
+    // fs.readFile('bd.json','utf8',(erro, texto)=>{
+    //     console.log(texto)
+	// 	if (erro)
+	// 		throw "Deu algum erro: "+erro;
 		
-		var meuBD = JSON.parse(texto);
+	// 	var meuBD = JSON.parse(texto);
          
-        resenhas.id = parseInt(meuBD.resenhas.length) + 1 
+    //     resenhas.id = parseInt(meuBD.resenhas.length) + 1 
         
-		meuBD.resenhas.push(resenhas);
+	// 	meuBD.resenhas.push(resenhas);
 		
-		var meuBDString = JSON.stringify(meuBD);
-		console.log(meuBDString);
+	// 	var meuBDString = JSON.stringify(meuBD);
+	// 	console.log(meuBDString);
 		
-		fs.writeFile('bd.json',meuBDString,(erro)=>{
-			if (erro){
-				throw "Deu algum erro: "+erro;
-			}
-			else{
-				res.redirect("/");
-			}
-		});
-    })
+	// 	fs.writeFile('bd.json',meuBDString,(erro)=>{
+	// 		if (erro){
+	// 			throw "Deu algum erro: "+erro;
+	// 		}
+	// 		else{
+	// 			
+	// 		}
+	// 	});
+   // })
+   res.redirect("/");
 })
 
 app.get('/buscaResenha',(req,res)=>{
