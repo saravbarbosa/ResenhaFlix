@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ResenhaFlix</title>
+    <link type="text/css" rel="stylesheet" href="style.css">
+</head>
+<body>
+    <form action="/Resenha" method="post">
+    <br>
+    <br>
+    <div style="text-align: center;"><img onclick="window.location.href='inicio.html'" src="imagens/ResenhaFlix.png" id="banner" height="110"></div>
+    <br>
+    <div style='text-align:center'><h3 class = "cadastrofilme-pag">Adicionar novo filme</h3>
+    <br>
+    <p>
+        <div style='text-align:center'><label for ="titulo" class ="cadastrofilme-pag">Título:</label><br><br>
+        <input type="text" name="filme" class="adicionar" size="40" value="" placeholder="Informe o título do filme">
+    </p>
+    <br>
+    <p>
+        <div style='text-align:center'><label for="titulo" class="cadastrofilme-pag">Resenha:</label><br><br>
+        <textarea name="resenha" id="resenhas" cols="42" rows="10"
+        placeholder="Digite sua resenha..."></textarea>
+    </p>
+    <br>
+    <p>
+        <div style='text-align:center'><label for ="generos" class ="cadastrofilme-pag" >Gênero:</label><br><br>
+        <select name="genero" id="generosx" class ="cadastrofilme-pag">
+            <option value="Ação" class ="cadastrofilme-pag">Ação</option>
+            <option value="Aventura" class ="cadastrofilme-pag">Aventura</option>
+            <option value="Drama" class ="cadastrofilme-pag">Drama</option>
+            <option value="Fantasia" class ="cadastrofilme-pag">Fantasia</option>
+            <option value="Ficção científica" class ="cadastrofilme-pag">Ficção científica</option>
+            <option value="Romance" class ="cadastrofilme-pag">Romance</option>
+        </select>
+    </p>
+    <br>
+    <p>
+        <div style='text-align:center'><label for ="titulo" class ="cadastrofilme-pag">Diretor:</label><br><br>
+        <input type="text" name="diretor" class="adicionar" size="40" value="" placeholder="Informe o nome do diretor">
+    </p>
+    <br>
+    <p>
+        <div style='text-align:center'><label for ="ano1" class ="cadastrofilme-pag">Ano:</label><br><br>
+        <input type="number" name="ano" id="ano2" min="1896" max="2022">
+    </p>
+    <br>
+    <br>
+    <div style="text-align: center"><input type="submit" value="Adicionar" class="botao-buscar"></div>
+    <br>
+    <br>
+</form>
+</body>
+</html>
