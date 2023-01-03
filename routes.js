@@ -42,6 +42,32 @@ const sequelizeInstance = new Sequelize('resenhaflix', 'root', 'root', {
 	}
   });
   resenha.sync()
+
+  const usuario = sequelizeInstance.define('usuario', {
+	codigo: {
+	  type: Sequelize.INTEGER,
+	  autoIncrement: true,
+	  primaryKey: true
+	},
+	nome: {
+	  type: Sequelize.STRING
+	},
+	email: {
+	  type: Sequelize.STRING
+	},
+	senha: {
+	  type: Sequelize.STRING
+	},
+	dataNasc: {
+	  type: Sequelize.DATE
+	},
+	preferencias: {
+		type: Sequelize.STRING
+	},
+	
+  });
+
+  usuario.sync()
   
 
 
