@@ -1,6 +1,7 @@
 const express = require('express');
 const app = express();
 const port = 8081;
+const {Op} = require("sequelize")
 const bodyParser = require('body-parser');
 var urlEncodedParser = bodyParser.urlencoded({extended:false})
 
@@ -28,6 +29,9 @@ const sequelizeInstance = new Sequelize('resenhaflix', 'root', 'root', {
 	  autoIncrement: true,
 	  primaryKey: true
 	},
+	filme:{
+		type: Sequelize.STRING
+	},
 	resenha: {
 	  type: Sequelize.STRING
 	},
@@ -38,10 +42,36 @@ const sequelizeInstance = new Sequelize('resenhaflix', 'root', 'root', {
 	  type: Sequelize.STRING
 	},
 	ano: {
-	  type: Sequelize.DATE
+	  type: Sequelize.STRING
 	}
   });
   resenha.sync()
+
+  const usuario = sequelizeInstance.define('usuario', {
+	codigo: {
+	  type: Sequelize.INTEGER,
+	  autoIncrement: true,
+	  primaryKey: true
+	},
+	nome: {
+	  type: Sequelize.STRING
+	},
+	email: {
+	  type: Sequelize.STRING
+	},
+	senha: {
+	  type: Sequelize.STRING
+	},
+	dataNasc: {
+	  type: Sequelize.DATE
+	},
+	preferencias: {
+		type: Sequelize.STRING
+	},
+	
+  });
+
+  usuario.sync()
   
 
 
@@ -75,29 +105,6 @@ app.post("/Resenha", urlEncodedParser, (req, res) => {
 	})
 	resenhass.save()
 
-    // fs.readFile('bd.json','utf8',(erro, texto)=>{
-    //     console.log(texto)
-	// 	if (erro)
-	// 		throw "Deu algum erro: "+erro;
-		
-	// 	var meuBD = JSON.parse(texto);
-         
-    //     resenhas.id = parseInt(meuBD.resenhas.length) + 1 
-        
-	// 	meuBD.resenhas.push(resenhas);
-		
-	// 	var meuBDString = JSON.stringify(meuBD);
-	// 	console.log(meuBDString);
-		
-	// 	fs.writeFile('bd.json',meuBDString,(erro)=>{
-	// 		if (erro){
-	// 			throw "Deu algum erro: "+erro;
-	// 		}
-	// 		else{
-	// 			
-	// 		}
-	// 	});
-   // })
    res.redirect("/");
 })
 
@@ -105,66 +112,123 @@ app.get('/buscaResenha',(req,res)=>{
     res.sendFile(__dirname +"/"+"/public/buscar.html")
 });
 
-app.get('/Resenha', (req,res) => {
-    var filme = req.query.filme
-    var genero = req.query.genero
-    var ano = req.query.ano
+app.get('/Resenha', async (req,res) => {
+    var filmes = req.query.filme
+    var generos = req.query.genero
+    var anos = req.query.ano
 
-    filme = filme.replaceAll(" ","")
-	genero = genero.replaceAll(" ", "")
-	ano = ano.replaceAll(" ", "")
-	
-
+    //filmes = filmes.replaceAll(" ","")
+	//generos = generos.replaceAll(" ", "")
+	//anos = anos.replaceAll(" ", "")
+	let ub = ""
 		
-	fs.readFile('bd.json','utf8',(erro, texto)=>{
-		
-		if (erro)
-			throw "Deu algum erro: "+erro;
-		
-		var meuBD = JSON.parse(texto);
-		var resenhas = meuBD.resenhas;
-		
-		if(filme.length > 0 && genero == "" && ano == ""){
-			var encontrado = resenhas.filter(p =>  p.filme.replaceAll(" ","").toLowerCase().includes(filme.toLowerCase()));
-		} 
-		if (filme.length > 0 && genero.length > 0 && ano == "") {
-			var encontrado = resenhas.filter(p =>  p.filme.replaceAll(" ","").toLowerCase().includes(filme.replaceAll(" ","").toLowerCase()) && p.genero.replaceAll(" ","").toLowerCase().includes(genero.replaceAll(" ","").toLowerCase()));
-		}
-		if (filme.length > 0 && genero.length > 0 && ano.length > 0) {
-			var encontrado = resenhas.filter(p =>  p.filme.replaceAll(" ","").toLowerCase().includes(filme.replaceAll(" ","").toLowerCase()) && p.genero.replaceAll(" ","").toLowerCase().includes(genero.replaceAll(" ","").toLowerCase()) && p.ano.replaceAll(" ","").toLowerCase().includes(ano.replaceAll(" ","").toLowerCase()));
-		}
-		if (filme == "" && genero.length > 0 && ano.length > 0) {
-			var encontrado = resenhas.filter(p =>  p.genero.replaceAll(" ","").toLowerCase().includes(genero.replaceAll(" ","").toLowerCase()) && p.ano.replaceAll(" ","").toLowerCase().includes(ano.replaceAll(" ","").toLowerCase()));
-		}
-		if (filme.length > 0 && genero == ""  && ano.length > 0) {
-			var encontrado = resenhas.filter(p =>  p.filme.replaceAll(" ","").toLowerCase().includes(filme.replaceAll(" ","").toLowerCase()) && p.ano.replaceAll(" ","").toLowerCase().includes(ano.replaceAll(" ","").toLowerCase()));
-		}
-		
-		if (filme == "" && genero.length > 0 && ano == "") {
-			var encontrado = resenhas.filter(p =>  p.genero.replaceAll(" ","").toLowerCase().includes(genero.replaceAll(" ","").toLowerCase()));
-		}
-		
-		if (filme == '' && genero == '' && ano.length > 0) {
-			var encontrado = resenhas.filter(p => p.ano.replaceAll(" ","").toLowerCase().includes(ano.replaceAll(" ","").toLowerCase()));
-		}
-		var exibicao = ""
-		var filmes = []
-		for(var i=0; i < encontrado.length;i++){
+		if(filmes.length > 0 && generos == "" && anos == ""){
 			
-			exibicao+= "Titulo: "+encontrado[i].filme + " ";
-			exibicao+= "Resenha: "+encontrado[i].resenha + " ";
-			exibicao+= "Genero: "+encontrado[i].genero + " ";
-			exibicao+= "Diretor: "+encontrado[i].diretor + " ";
-			exibicao+= "Ano: "+encontrado[i].ano +  ""
+			const encontrado = resenha.findAll({
+				where:{
+					[Op.substring]: [
+						{filme: filmes},
+					],
+				}
+			})
+			ub = encontrado
 
-			filmes.push(exibicao)
+		};
+		if (filmes.length > 0 && generos.length > 0 && anos == "") {
+			const encontrado = resenha.findAll({
+				where:{
+					filme: {
+						[Op.substring]: Sequelize.literal(filmes)
+					},
+					genero: {
+						[Op.substring]: Sequelize.literal(generos)
+					}
+				}
+			})
+			ub = encontrado
+		}
+		if (filmes.length > 0 && generos.length > 0 && anos.length > 0) {
+			const encontrado = resenha.findAll({
+				where:{
+					[Op.substring]: [
+						{filme: filmes},
+						{genero: generos},
+						{ano: anos}
+					]
+				}
+			})
+			ub = encontrado
+
+		}
+		if (filmes == "" && generos.length > 0 && anos.length > 0) {
+			const encontrado = resenha.findAll({
+				where:{
+					[Op.substring]: [
+						{ano: anos},
+						{genero: generos}
+					]
+				}
+			})
+			ub = encontrado
+
+		}
+		if (filmes.length > 0 && generos == ""  && anos.length > 0) {
+			const encontrado = resenha.findAll({
+				where:{
+					[Op.substring]: [
+						{filme: filmes},
+						{ano: anos}
+					]
+				}
+			})
+			ub = encontrado
+
+		}
+		
+		if (filmes == "" && generos.length > 0 && anos == "") {
+			const encontrado = await resenha.findAll({
+				
+				where:{
+					genero: generos
+				}
+			})
+			ub = encontrado
+
+		}
+		
+		if (filmes == '' && generos == '' && anos.length > 0) {
+			 resenha.findAll({
+				where:{
+					[Op.substring]: [
+						{ano: anos},
+					]
+				}
+			})
+			ub = encontrado
+		}
+
+		var exibicao = ""
+		var film = []
+		ub = JSON.stringify(ub)
+		ub = JSON.parse(ub)
+		console.log(ub)
+		
+		for(var i=0; i < ub.length;i++){
+			
+			exibicao+= "Titulo: "+ub[i].filme + " ";
+			exibicao+= "Resenha: "+ub[i].resenha + " ";
+			exibicao+= "Genero: "+ub[i].genero + " ";
+			exibicao+= "Diretor: "+ub[i].diretor + " ";
+			exibicao+= "Ano: "+ub[i].ano +  ""
+
+			film.push(exibicao)
 			exibicao = ""
 
 			
-		}
+		 }
 		
-		res.render(__dirname + "/public/busca-realizada.html",  {filme :filmes});
-	})
+		res.render(__dirname + "/public/busca-realizada.html",  {filme :film});
+	
 })
 
 
