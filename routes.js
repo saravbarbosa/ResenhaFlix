@@ -124,61 +124,74 @@ app.get('/Resenha', async (req,res) => {
 		
 		if(filmes.length > 0 && generos == "" && anos == ""){
 			
-			const encontrado = resenha.findAll({
+			const encontrado = await resenha.findAll({
 				where:{
-					[Op.substring]: [
-						{filme: filmes},
-					],
+						filme: {
+							[Op.substring]: filmes
+						}	
 				}
 			})
 			ub = encontrado
 
 		};
 		if (filmes.length > 0 && generos.length > 0 && anos == "") {
-			const encontrado = resenha.findAll({
+			const encontrado = await resenha.findAll({
 				where:{
 					filme: {
-						[Op.substring]: Sequelize.literal(filmes)
+						[Op.substring]: filmes
 					},
 					genero: {
-						[Op.substring]: Sequelize.literal(generos)
+						[Op.substring]: generos
 					}
 				}
 			})
 			ub = encontrado
 		}
 		if (filmes.length > 0 && generos.length > 0 && anos.length > 0) {
-			const encontrado = resenha.findAll({
+			const encontrado = await resenha.findAll({
 				where:{
-					[Op.substring]: [
-						{filme: filmes},
-						{genero: generos},
-						{ano: anos}
-					]
+						filme: {
+							[Op.substring]: filmes
+						},
+						genero: {
+							[Op.substring]: generos
+						},
+						ano: {
+							[Op.substring]: anos
+						}
+					
 				}
 			})
 			ub = encontrado
 
 		}
 		if (filmes == "" && generos.length > 0 && anos.length > 0) {
-			const encontrado = resenha.findAll({
+			const encontrado = await resenha.findAll({
 				where:{
-					[Op.substring]: [
-						{ano: anos},
-						{genero: generos}
-					]
+					
+					genero: {
+						[Op.substring]: generos
+					},
+					ano: {
+						[Op.substring]: anos
+					}
+				
 				}
 			})
 			ub = encontrado
 
 		}
 		if (filmes.length > 0 && generos == ""  && anos.length > 0) {
-			const encontrado = resenha.findAll({
+			const encontrado = await resenha.findAll({
 				where:{
-					[Op.substring]: [
-						{filme: filmes},
-						{ano: anos}
-					]
+					filme: {
+						[Op.substring]: filmes
+					},
+					
+					ano: {
+						[Op.substring]: anos
+					}
+				
 				}
 			})
 			ub = encontrado
@@ -197,11 +210,12 @@ app.get('/Resenha', async (req,res) => {
 		}
 		
 		if (filmes == '' && generos == '' && anos.length > 0) {
-			 resenha.findAll({
+			const encontrado = await resenha.findAll({
 				where:{
-					[Op.substring]: [
-						{ano: anos},
-					]
+					ano: {
+						[Op.substring]: anos
+					}
+				
 				}
 			})
 			ub = encontrado
