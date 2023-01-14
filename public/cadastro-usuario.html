@@ -8,7 +8,8 @@
     <link type="text/css" rel="stylesheet" href="style.css">
 </head>
 <body>
-    <form action="/Resenha" method="post">
+    <form action="/Usuario" method="post">
+    <input type="hidden" value="<%= usuario.id %>">
     <div style='text-align:right'><button type="button" onclick="window.location.href='login.html'" class="sair">Sair</button></div>
     <div style="text-align: center;"><img onclick="window.location.href='login.html'" src="imagens/ResenhaFlix.png" id="banner" height="110"></div>
     <br>
@@ -16,22 +17,22 @@
     <br>
     <p>
         <div style='text-align:center'><label for ="titulo" class ="cadastroUser">Nome:</label><br><br>
-        <input type="text" name="filme" class="adicionar" size="40" value="" placeholder="Informe o seu nome">
+        <input type="text" name="nome" class="adicionar" size="40" value="" placeholder="Informe o seu nome">
     </p>
     <br>
     <p>
         <div style='text-align:center'><label for ="titulo" class ="cadastroUser">Email:</label><br><br>
-        <input type="text" name="filme" class="adicionar" size="40" value="" placeholder="Informe o seu e-mail">
+        <input type="text" name="email" class="adicionar" size="40" value="" placeholder="Informe o seu e-mail">
     </p>
     <br>
     <p>
         <div style='text-align:center'><label for="datanasc" class="cadastroUser">Data de nascimento:</label><br><br>
-        <input type="date" name="date" id="datanascimento" class="adicionar">
+        <input type="date" name="data" id="datanascimento" class="adicionar">
     </p>
     <br>
     <p>
         <div style='text-align:center'><label for="senha" class="cadastroUser">Senha:</label><br><br>
-        <div style='text-align:center'><input type="password" name ="Senha" id="senha" size="40"  maxlength="20" placeholder="Crie uma nova senha"></input></div>
+        <div style='text-align:center'><input type="password" name ="senha" id="senha" size="40"  maxlength="20" placeholder="Crie uma nova senha"></input></div>
     </p>
     <br>
     <br>

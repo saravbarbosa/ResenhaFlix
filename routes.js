@@ -9,6 +9,14 @@ app.engine('html', require('ejs').renderFile);
 app.set('view engine', 'html');
 app.set('views', __dirname);
 
+app.use(express.urlencoded({extended: false}));
+app.use(express.json())
+const bcrypt = require('bcrypt');
+const jwt = require("jsonwebtoken")
+const jwtConfig = require("./config/jwt")
+const dotenv = require('dotenv');
+dotenv.config();
+
 const fs = require('fs');
 
 const Sequelize = require('sequelize')
@@ -64,11 +72,7 @@ const usuario = sequelizeInstance.define('usuario', {
 	},
 	dataNasc: {
 		type: Sequelize.DATE
-	},
-	preferencias: {
-		type: Sequelize.STRING
-	},
-
+	}
 });
 
 usuario.sync({ alter: true })
@@ -77,6 +81,10 @@ app.use(express.static(__dirname + '/public'))
 
 app.get("/", (req, res) => {
 	res.sendFile(__dirname + "/" + "public/inicio.html")
+})
+
+app.get("/login", (req, res) => {
+	res.sendFile(__dirname + "/" + "public/login.html")
 })
 
 app.get("/resenhaDom", (req, res) => {
@@ -117,15 +125,30 @@ app.get("/cadUsuario", (req, res) => {
 	res.sendFile(__dirname + "/" + "public/adicionarUsuario.html")
 })
 
-app.post("/Usuario", urlEncodedParser, (req, res) => {
+app.post("/Usuario", urlEncodedParser, async (req, res) => {
 	var id = req.body.id
 
 	var nomes = req.body.nome
 	var emails = req.body.email
+	
 	var dataN = req.body.data
-	var preferenciass = req.body.preferencias
-	const user = { nome: nomes, email: emails, dataNasc: dataN, preferencias: preferenciass }
 
+	const salt = await bcrypt.genSalt(10)
+	const senhas = await bcrypt.hash(req.body.senha, salt);
+
+	const user = { nome: nomes, email: emails, dataNasc: dataN, senha: senhas }
+
+	const Existe = await usuario.findOne({  
+        where:{
+            email: emails
+        }
+    })
+	
+	var err = "usuario já existente"
+	
+	if(Existe){
+        res.render(__dirname + "/" + "public/erro.html",{erro: err} )
+    }else{
 	if (id != null) {
 		const usuarioss = usuario.update(user, {
 			where: {
@@ -133,12 +156,17 @@ app.post("/Usuario", urlEncodedParser, (req, res) => {
 			}
 		}
 		)
+		res.redirect("/");
 	} else {
 	const usuarioss = usuario.build(user)
-	resenhass.save()
+	usuarioss.save()
+	token = jwt.sign({"id":user.id,"email":user.email,"nome":user.nome},jwtConfig.secret)
+	res.status(200).json({ token : token });
+	}
+	res.redirect("/");
 }
 
-res.redirect("/");
+
 })
 
 
