@@ -13,7 +13,7 @@ const fs = require('fs');
 
 const Sequelize = require('sequelize')
 
-const sequelizeInstance = new Sequelize('resenhaflix', 'root', 'root', {
+const sequelizeInstance = new Sequelize('resenhaFlix', 'root', '258000', {
 	host: 'localhost',
 	dialect: 'mysql'
 })
@@ -135,7 +135,7 @@ app.post("/Usuario", urlEncodedParser, (req, res) => {
 		)
 	} else {
 	const usuarioss = usuario.build(user)
-	resenhass.save()
+	usuarioss.save()
 }
 
 res.redirect("/");
