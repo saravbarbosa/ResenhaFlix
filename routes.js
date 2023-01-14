@@ -228,6 +228,9 @@ app.get('/Resenha', async (req, res) => {
 
 		}
 		
+		})
+		ub = encontrado
+	}
 		if (filmes == '' && generos == '' && anos.length > 0) {
 			const encontrado = await resenha.findAll({
 				where:{
