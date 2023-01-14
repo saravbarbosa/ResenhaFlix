@@ -69,7 +69,7 @@ body{
     size: 14px;
 }
 
-.cadastrofilme-pag {
+.cadastrofilme-pag, .cadastroUser {
     color: #dbd6d6;
     line-height: 30px;
 }
@@ -89,7 +89,7 @@ body{
     background-color: #232323;  
     color: white
 }
-.botao-buscar {
+.botao-buscar, .botao-cadastrar {
     background-color: #ff0000; 
     padding: 15px; 
     border: none; 
@@ -97,6 +97,34 @@ body{
     width: 8.8%; 
     color: white; 
     font-family: arial; 
+    cursor: pointer
+}
+.botao-editar {
+    background-color: #1ba14e; 
+    padding: 15px; 
+    border: none; 
+    border-radius: 4px; 
+    width: 8.8%; 
+    color: white; 
+    font-family: arial; 
+    cursor: pointer;
+    float: right;
+    margin: 0px;
+    margin-left: 600px;
+    cursor: pointer
+}
+.botao-excluir {
+    background-color: #ff0000; 
+    padding: 15px; 
+    border: none; 
+    border-radius: 4px; 
+    width: 8.8%; 
+    color: white; 
+    font-family: arial; 
+    cursor: pointer;
+    float: right;
+    margin: 0px;
+    margin-right: 600px;
     cursor: pointer
 }
 
@@ -111,7 +139,7 @@ body{
     font-family: arial; 
     cursor: pointer; 
     font-size: 17px;
-    margin-left: 400px;
+    margin-left: 500px;
 }
 #resenhas {
     color: #dbd6d6;
@@ -121,4 +149,69 @@ body{
     background-color: #232323;  
     color: white;
     resize: none
+}
+.sair {
+    background: #f1f1f1;
+    cursor: pointer;
+    color: black
+}
+#divResultado{
+    text-align: center;
+    font-weight: bold;
+}
+#titulo-login{
+    color:#dbd6d6; 
+    font-family: arial;
+}
+#usuario{
+    padding: 15px; 
+    border: none; 
+    border-radius: 4px; 
+    font-family: arial; 
+    background-color: #232323; 
+    color: white
+}
+#senha{
+    padding: 15px; 
+    border: none; 
+    border-radius: 4px; 
+    font-family: arial; 
+    background-color: #232323; 
+    color: white
+}
+#entrar{
+    background-color: #ff0000; 
+    padding: 15px; 
+    border: none; 
+    border-radius: 4px; 
+    width: 23%; 
+    color: white; 
+    font-family: arial; 
+    cursor: pointer
+}
+#esqueceu{
+    text-align:center; 
+    font-size: 13px; 
+    width: 1240px; 
+    color: white; 
+    font-family: arial;
+    color: grey; 
+    text-decoration: none;
+    cursor: pointer
+}
+#cadastro2{
+    text-align: center; 
+    font-size: 14px; 
+    width: 1450px; 
+    color: grey; 
+    font-family: arial
+}
+#cadastro3{
+    font-size: 14px;
+    color: red; 
+    text-decoration: none
+}
+.avatar {
+    width:180px;
+    border-radius: 10%;
 }

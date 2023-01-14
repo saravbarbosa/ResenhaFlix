@@ -8,26 +8,22 @@
     <link type="text/css" rel="stylesheet" href="style.css">
 </head>
 <body>
-    <form action="/Resenha" method="post">
     <div style='text-align:right'><button type="button" onclick="window.location.href='login.html'" class="sair">Sair</button></div>
     <div style="text-align: center;"><img onclick="window.location.href='inicio.html'" src="imagens/ResenhaFlix.png" id="banner" height="110"></div>
     <br>
-    <div style='text-align:center'><h3 class = "cadastrofilme-pag">Adicionar novo filme</h3>
+    <div style='text-align:center'><h3 class ="cadastrofilme-pag">Buscar filme</h3>
+    <form action="/Resenha" method="get">
     <br>
     <p>
         <div style='text-align:center'><label for ="titulo" class ="cadastrofilme-pag">Título:</label><br><br>
-        <input type="text" name="filme" class="adicionar" size="40" value="" placeholder="Informe o título do filme">
-    </p>
-    <br>
-    <p>
-        <div style='text-align:center'><label for="titulo" class="cadastrofilme-pag">Resenha:</label><br><br>
-        <textarea name="resenha" id="resenhas" cols="42" rows="10"
-        placeholder="Digite sua resenha..."></textarea>
+        <input type="text" name="filme" id="buscar-titulo" size="40" value="" placeholder="Informe o título do filme">
     </p>
     <br>
     <p>
         <div style='text-align:center'><label for ="generos" class ="cadastrofilme-pag" >Gênero:</label><br><br>
-        <select name="genero" id="generosx" class ="cadastrofilme-pag">
+        <select name="genero" id="generos" class ="cadastrofilme-pag">
+            
+            <option value="" selected="true" class ="cadastrofilme-pag"></option>
             <option value="Ação" class ="cadastrofilme-pag">Ação</option>
             <option value="Aventura" class ="cadastrofilme-pag">Aventura</option>
             <option value="Drama" class ="cadastrofilme-pag">Drama</option>
@@ -38,19 +34,14 @@
     </p>
     <br>
     <p>
-        <div style='text-align:center'><label for ="titulo" class ="cadastrofilme-pag">Diretor:</label><br><br>
-        <input type="text" name="diretor" class="adicionar" size="40" value="" placeholder="Informe o nome do diretor">
-    </p>
-    <br>
-    <p>
         <div style='text-align:center'><label for ="ano1" class ="cadastrofilme-pag">Ano:</label><br><br>
-        <input type="number" name="ano" id="ano2" min="1896" max="2022">
+        <input type="number" name="ano" id="ano1" min="1896" max="2022">
     </p>
     <br>
     <br>
-    <div style="text-align: center"><input type="submit" value="Adicionar" class="botao-buscar"></div>
+    <div style="text-align: center"><button type="submit" value="Buscar" class="botao-buscar">Buscar</button></div>
     <br>
     <br>
-</form>
+    </form>
 </body>
 </html>
