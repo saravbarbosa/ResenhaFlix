@@ -292,6 +292,24 @@ app.get('/Resenha', async (req, res) => {
 	res.render(__dirname + "/public/busca-realizada.html", { filme: film });
 
 })
+app.get("/removerUsuario",(req,res)=>{
+	const id = req.query.id
+	const remove = usuario.destroy({
+		where:{
+			id: id
+		}
+	}
+	)
+})
+app.get("/removerResenha",(req,res)=>{
+	const id = req.query.id
+	const remove = resenha.destroy({
+		where:{
+			id: id
+		}
+	}
+	)
+})
 
 
 app.listen(port, () => {
