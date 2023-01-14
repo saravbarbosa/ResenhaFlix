@@ -152,6 +152,7 @@ app.get('/Resenha', async (req, res) => {
 	var anos = req.query.ano
 	let ub = ""
 
+
 	if (filmes.length > 0 && generos == "" && anos == "") {
 
 		const encontrado = await resenha.findAll({
@@ -188,6 +189,7 @@ app.get('/Resenha', async (req, res) => {
 				},
 				ano: {
 					[Op.substring]: anos
+
 				}
 
 			}
@@ -204,6 +206,7 @@ app.get('/Resenha', async (req, res) => {
 				},
 				ano: {
 					[Op.substring]: anos
+
 				}
 
 			}
@@ -221,6 +224,17 @@ app.get('/Resenha', async (req, res) => {
 				ano: {
 					[Op.substring]: anos
 				}
+
+
+		}
+		
+		if (filmes == '' && generos == '' && anos.length > 0) {
+			const encontrado = await resenha.findAll({
+				where:{
+					ano: {
+						[Op.substring]: anos
+					}
+				
 
 			}
 		})
@@ -244,6 +258,7 @@ app.get('/Resenha', async (req, res) => {
 			where: {
 				ano: {
 					[Op.substring]: anos
+
 				}
 
 			}
