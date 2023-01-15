@@ -17,29 +17,21 @@
     <br>
     <br>
     <div style='text-align:center'>
-        <h3 class="cadastrofilme-pag">Resenhas de filmes encontradas:</h3>
+        <h3 class="cadastrofilme-pag">Erro</h3>
         <br>
         <br>
         <nav>
+            <div style="display: flex; gap: 12px; align-items: center;">
+                <h3 class="barra2">
 
-
-            <%for(var i=0; i < filme.length; i++) {%>
-                <div style="display: flex; gap: 12px; align-items: center;">
-                    <h3 class="barra2">
-                      
-                        <%-  filme[i] %>
+                    <%=erro%>
                         <br>
-                    </h3>
-                </div>
-            <%}%>
-
-
-
-
-                    <div style="display: flex; gap: 12px;">
-                    </div>
+                </h3>
+            </div>
+            <div style="display: flex; gap: 12px;">
+            </div>
     </div>
-
+    <script>console.log(erro)</script>
     </nav>
 
 </body>

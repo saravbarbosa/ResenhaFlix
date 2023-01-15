@@ -16,14 +16,14 @@
     <div style="text-align: center;"><img onclick="window.location.href='login.html'" src="imagens/ResenhaFlix.png" id="banner" alt="" height="90" style="cursor: pointer"></div>
     <br>
     <div style= 'text-align:center'><h2 id="titulo-login">Login</h2></div>
-    <form action="inicio.html" method="get">
-        <div style='text-align:center'><input type="text" name="usuario" id="usuario" size="40" maxlength="20" value="" placeholder="Usuário"></div>
+    <form action="/login" method="post">
+        <div style='text-align:center'><input type="text" name="email" id="usuario" size="40"  value="" placeholder="Usuário" required></div>
     </p>
     <p>
-        <div style='text-align:center'><input type="password" name ="Senha" id="senha" size="40"  maxlength="20" placeholder="Senha"></input></div>
+        <div style='text-align:center'><input type="password" name ="senha" id="senha" size="40"  placeholder="Senha" required></input></div>
     </p>
     <p>
-        <div style='text-align:center'><input type="submit" value="Entrar" id ="entrar"><a href="inicio.html"></a></div>
+        <div style='text-align:center'><input type="submit" value="Entrar" id ="entrar"><a href="/home"></a></div>
     </p>
    
 <br>

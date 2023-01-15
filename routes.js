@@ -1,3 +1,5 @@
+const dotenv = require('dotenv');
+dotenv.config();
 const express = require('express');
 const app = express();
 const port = 8081;
@@ -13,15 +15,14 @@ app.use(express.urlencoded({extended: false}));
 app.use(express.json())
 const bcrypt = require('bcrypt');
 const jwt = require("jsonwebtoken")
-const jwtConfig = require("./config/jwt")
-const dotenv = require('dotenv');
-dotenv.config();
+const jwtConfig = require("./config/jwt.js")
+const verifyJWT = require("./auth.js")
 
 const fs = require('fs');
+const usuario = require("./models/usuario")
+const resenha = require("./models/resenha")
 
-const Sequelize = require('sequelize')
-
-const sequelizeInstance = new Sequelize('resenhaFlix', 'root', '258000', {
+const sequelizeInstance = new Sequelize('resenhaflix', 'root', 'root', {
 	host: 'localhost',
 	dialect: 'mysql'
 })
@@ -31,108 +32,26 @@ sequelizeInstance.authenticate().then(function () {
 	console.log("Erro ao conectar: " + erro)
 })
 
-const resenha = sequelizeInstance.define('resenha', {
-	codigo: {
-		type: Sequelize.INTEGER,
-		autoIncrement: true,
-		primaryKey: true
-	},
-	filme: {
-		type: Sequelize.STRING
-	},
-	resenha: {
-		type: Sequelize.STRING
-	},
-	genero: {
-		type: Sequelize.STRING
-	},
-	diretor: {
-		type: Sequelize.STRING
-	},
-	ano: {
-		type: Sequelize.STRING
-	}
-});
 resenha.sync({ alter: true })
-
-const usuario = sequelizeInstance.define('usuario', {
-	codigo: {
-		type: Sequelize.INTEGER,
-		autoIncrement: true,
-		primaryKey: true
-	},
-	nome: {
-		type: Sequelize.STRING
-	},
-	email: {
-		type: Sequelize.STRING
-	},
-	senha: {
-		type: Sequelize.STRING
-	},
-	dataNasc: {
-		type: Sequelize.DATE
-	}
-});
-
 usuario.sync({ alter: true })
 
 app.use(express.static(__dirname + '/public'))
-
-app.get("/", (req, res) => {
-	res.sendFile(__dirname + "/" + "public/inicio.html")
-})
 
 app.get("/login", (req, res) => {
 	res.sendFile(__dirname + "/" + "public/login.html")
 })
 
-app.get("/resenhaDom", (req, res) => {
-	res.sendFile(__dirname + "/" + "public/resenha.html")
-})
-
-app.get("/cadResenha", (req, res) => {
-	res.sendFile(__dirname + "/" + "public/adicionar.html")
-})
-
-app.post("/Resenha", urlEncodedParser, (req, res) => {
-	var id = req.body.id
-	var filme = req.body.filme
-	var nresenha = req.body.resenha
-	var genero = req.body.genero
-	var diretor = req.body.diretor
-	var ano = req.body.ano
-	const rese = {
-		filme: filme, resenha: nresenha, genero: genero, diretor: diretor, ano: ano
-	}
-	if (id != null){
-		const resen = resenha.update(rese,{
-			where: {
-				id: id
-			}
-		})
-	} else {
-	const resenhass = resenha.build({
-		filme: filme, resenha: nresenha, genero: genero, diretor: diretor, ano: ano
-	})
-	
-	resenhass.save()
-   }
-	res.redirect("/");
-})
 
 app.get("/cadUsuario", (req, res) => {
 	res.sendFile(__dirname + "/" + "public/adicionarUsuario.html")
 })
 
 app.post("/Usuario", urlEncodedParser, async (req, res) => {
-	var id = req.body.id
 
+	var id = req.body.id
 	var nomes = req.body.nome
 	var emails = req.body.email
-	
 	var dataN = req.body.data
-
 	const salt = await bcrypt.genSalt(10)
 	const senhas = await bcrypt.hash(req.body.senha, salt);
 
@@ -148,27 +67,82 @@ app.post("/Usuario", urlEncodedParser, async (req, res) => {
 	
 	if(Existe){
         res.render(__dirname + "/" + "public/erro.html",{erro: err} )
-    }else{
-	if (id != null) {
-		const usuarioss = usuario.update(user, {
-			where: {
-			 id: id 
-			}
-		}
-		)
-		res.redirect("/");
-	} else {
-	const usuarioss = usuario.build(user)
+    }else {
+	const usuarioss = await usuario.create(user)
+
 	usuarioss.save()
-	token = jwt.sign({"id":user.id,"email":user.email,"nome":user.nome},jwtConfig.secret)
-	res.status(200).json({ token : token });
+
+	var ids = await usuario.findOne({
+		where:{
+			email: emails
+		}
+	})
+	//console.log(ids.codigo, user.email, user.nome)
+	token = jwt.sign({"id":ids.codigo,"email":user.email,"nome":user.nome},jwtConfig.secret)
 	}
 	res.redirect("/");
-}
-
-
+})
+app.get("/", (req,res)=>{
+	res.sendFile(__dirname + "/" + "public/login.html")
 })
 
+app.post("/login",verifyJWT, urlEncodedParser, async(req,res)=>{
+	
+    var usuarioss = await usuario.findOne({
+        where:{
+            email: req.body.email
+        }
+    })
+
+    if(usuarioss){
+		const senha_valida = await bcrypt.compare(req.body.senha,usuarioss.senha)
+
+        if(senha_valida){
+			
+			token = jwt.sign({"id":usuarioss.codigo,"email":usuarioss.email,"nome":usuarioss.nome},jwtConfig.secret)
+			res.status(200).json({ token : token });
+            
+        }else{
+			res.render(__dirname + "/" + "public/erro.html",{erro: "senha incorreta"} )
+        }
+    }else{
+        res.render(__dirname + "/" + "public/erro.html",{erro: "usuario não cadastrado"})
+    }
+})
+
+
+
+app.get("/home", (req, res) => {
+	res.sendFile(__dirname + "/" + "public/inicio.html")
+})
+app.get("/resenhaDom", (req, res) => {
+	res.sendFile(__dirname + "/" + "public/resenha.html")
+})
+
+app.get("/cadResenha", (req, res) => {
+	res.sendFile(__dirname + "/" + "public/adicionar.html")
+})
+
+app.post("/Resenha", urlEncodedParser, (req, res) => {
+	var id = req.body.id
+	var filme = req.body.filme
+	var nresenha = req.body.resenha
+	var genero = req.body.genero
+	var diretor = req.body.diretor
+	var ano = req.body.ano
+
+	const rese = {
+		filme: filme, resenha: nresenha, genero: genero, diretor: diretor, ano: ano
+	}
+	
+	const resenhass = resenha.build({
+		filme: filme, resenha: nresenha, genero: genero, diretor: diretor, ano: ano
+	})
+	
+	resenhass.save()
+   
+	res.redirect("/");
+})
 
 app.get('/buscaResenha', (req, res) => {
 	res.sendFile(__dirname + "/" + "/public/buscar.html")
@@ -179,7 +153,6 @@ app.get('/Resenha', async (req, res) => {
 	var generos = req.query.genero
 	var anos = req.query.ano
 	let ub = ""
-
 
 	if (filmes.length > 0 && generos == "" && anos == "") {
 
@@ -272,7 +245,6 @@ app.get('/Resenha', async (req, res) => {
 		ub = encontrado
 
 	}
-
 	if (filmes == "" && generos.length > 0 && anos == "") {
 		const encontrado = await resenha.findAll({
 
@@ -283,7 +255,6 @@ app.get('/Resenha', async (req, res) => {
 		ub = encontrado
 
 	}
-
 	if (filmes == '' && generos == '' && anos.length > 0) {
 		const encontrado = await resenha.findAll({
 			where: {
@@ -304,41 +275,124 @@ app.get('/Resenha', async (req, res) => {
 	console.log(ub)
 
 	for (var i = 0; i < ub.length; i++) {
-
+		
 		exibicao += "Titulo: " + ub[i].filme + " ";
 		exibicao += "Resenha: " + ub[i].resenha + " ";
 		exibicao += "Genero: " + ub[i].genero + " ";
 		exibicao += "Diretor: " + ub[i].diretor + " ";
-		exibicao += "Ano: " + ub[i].ano + ""
-
+		exibicao += "Ano: " + ub[i].ano + " ";
+		exibicao += `<a href="/removerResenha/${ub[i].codigo}">remover</a>` + " ";
+		exibicao += `<a href="/editarResenha?id=${ub[i].codigo}">editar</a>`;
+		
 		film.push(exibicao)
 		exibicao = ""
-
-
+		
 	}
 
 	res.render(__dirname + "/public/busca-realizada.html", { filme: film });
 
 })
-app.get("/removerUsuario",(req,res)=>{
-	const id = req.query.id
+app.get("/removerUsuario/:id",(req,res)=>{
+	const id = req.params.id
 	const remove = usuario.destroy({
 		where:{
-			id: id
+			codigo: id
 		}
-	}
-	)
+	})
+	res.redirect("/home");
 })
-app.get("/removerResenha",(req,res)=>{
-	const id = req.query.id
-	const remove = resenha.destroy({
+app.get("/removerResenha/:id",async (req,res)=>{
+	var id = req.params.id
+	const remove = await resenha.destroy({
 		where:{
-			id: id
+			codigo: id
 		}
-	}
-	)
+	})
+	res.redirect("/buscaResenha");
+})
+app.get("/editarResenha/",async (req,res)=>{
+	var id = req.query.id
+	let ub = ""
+	const enc = await resenha.findOne({
+		where:{
+			codigo: id
+		}
+	})
+
+	ub = enc
+	ub = JSON.stringify(ub)
+	ub = JSON.parse(ub)
+	console.log(ub)
+	
+	var filme = ub.filme
+	var resenhas = ub.resenha
+	var genero = ub.genero
+	var diretor = ub.diretor
+	var ano = ub.ano
+	
+
+	res.render(__dirname + "/public/editar.html", { filme: filme, resenha: resenhas, genero: genero, diretor: diretor, ano:ano, codigo: id });
 })
 
+app.post("/editarResenha", async (req, res)=>{
+	var codigos = req.body.codigo
+	var filme = req.body.filme
+	var nresenha = req.body.resenha
+	var genero = req.body.genero
+	var diretor = req.body.diretor
+	var ano = req.body.ano
+
+	const rese = {
+		filme: filme, resenha: nresenha, genero: genero, diretor: diretor, ano: ano
+	}
+	
+	const acha = await resenha.update(rese,{
+		where:{
+			codigo: codigos
+		}
+	})
+	res.redirect("/home")
+})
+app.get("/editarUsuario/",async (req,res)=>{
+	var id = req.query.id
+	let ub = ""
+	const enc = await usuario.findOne({
+		where:{
+			codigo: id
+		}
+	})
+
+	ub = enc
+	ub = JSON.stringify(ub)
+	ub = JSON.parse(ub)
+	console.log(ub)
+	
+	var id = req.body.id
+	var nomes = ub.nome
+	var emails = ub.email
+	var dataN = ub.data
+
+	res.render(__dirname + "/public/editarUsuario.html", { nome: nomes, email: emails, dataNasc: dataN});
+})
+
+app.post("/editarUsuarios", async (req, res)=>{
+	var id = req.body.id
+	var nomes = req.body.nome
+	var emails = req.body.email
+	var dataN = req.body.data
+
+	const us = {
+		nome: nomes, email: emails, dataNasc: dataN
+	}
+	
+	const acha = await usuario.update(us,{
+		where:{
+			codigo: id
+		}
+	})
+
+	res.redirect("/home")
+})
 
 app.listen(port, () => {
 	console.log(`Esta aplicação está escutando a

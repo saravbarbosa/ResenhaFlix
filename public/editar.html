@@ -7,11 +7,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ResenhaFlix</title>
     <link type="text/css" rel="stylesheet" href="style.css">
-    
 </head>
 
 <body>
-    <form action="/Resenha" method="post">
+    <form action="/editarResenha" method="post">
         <div style='text-align:right'> <a href="/"><button type="button" 
                 class="sair">Sair</button></a></div>
         <div style="text-align: center;"><a href="/home"><img  src="imagens/ResenhaFlix.png"
@@ -21,21 +20,22 @@
             <h3 class="cadastrofilme-pag">Adicionar novo filme</h3>
             <br>
             <p>
-          
+            
             <div style='text-align:center'><label for="titulo" class="cadastrofilme-pag">Título:</label><br><br>
-                <input type="text" name="filme"  class="adicionar" size="40" placeholder="Informe o título do filme">
+                <input type="hidden" name="codigo" value="<%-codigo%>">
+                <input type="text" name="filme"  class="adicionar" size="40" 
+                    value = "<%-filme%>">
                 </p>
                 <br>
                 <p>
                 <div style='text-align:center'><label for="titulo" class="cadastrofilme-pag">Resenha:</label><br><br>
-                    <textarea name="resenha" id="resenhas" cols="42" rows="10"
-                        placeholder="Digite sua resenha..."></textarea>
+                    <textarea name="resenha" id="resenhas" cols="42" rows="10" ><%-resenha%></textarea>
                     </p>
                     <br>
                     <p>
                     <div style='text-align:center'><label for="generos"
                             class="cadastrofilme-pag">Gênero:</label><br><br>
-                        <select name="genero" id="generosx" class="cadastrofilme-pag">
+                        <select name="genero" id="generosx" class="cadastrofilme-pag"value="<%-genero%>">
                             <option value="Ação" class="cadastrofilme-pag">Ação</option>
                             <option value="Aventura" class="cadastrofilme-pag">Aventura</option>
                             <option value="Drama" class="cadastrofilme-pag">Drama</option>
@@ -48,14 +48,14 @@
                         <p>
                         <div style='text-align:center'><label for="titulo"
                                 class="cadastrofilme-pag">Diretor:</label><br><br>
-                            <input type="text" name="diretor" class="adicionar" size="40" value=""
-                                placeholder="Informe o nome do diretor">
+                            <input type="text" name="diretor" class="adicionar" size="40" 
+                                placeholder="Informe o nome do diretor" value="<%-diretor%>">
                             </p>
                             <br>
                             <p>
                             <div style='text-align:center'><label for="ano1"
                                     class="cadastrofilme-pag">Ano:</label><br><br>
-                                <input type="number" name="ano" id="ano2" min="1896" max="2023">
+                                <input type="number" name="ano" id="ano2" min="1896" max="2023" value="<%-ano%>">
                                 </p>
                                 <br>
                                 <br>

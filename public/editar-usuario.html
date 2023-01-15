@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ResenhaFlix</title>
+    <link type="text/css" rel="stylesheet" href="style.css">
+</head>
+<body>
+    <form action="/Usuario" method="post">
+    <input type="hidden" value="<%- codigo %>">
+    <div style='text-align:right'><button type="button" class="sair"><a href="/login">Sair</a></button></div>
+    <div style="text-align: center;"><a href="/login"><img  src="imagens/ResenhaFlix.png" id="banner" height="110"></a></div>
+    <br>
+    <div style='text-align:center'><h3 class = "cadastrofilme-pag">Cadastro de usuário</h3>
+    <br>
+    <p>
+        <div style='text-align:center'><label for ="titulo" class ="cadastroUser">Nome:</label><br><br>
+        <input type="text" name="nome" class="adicionar" size="40" value="<%-nome%>" placeholder="Informe o seu nome">
+    </p>
+    <br>
+    <p>
+        <div style='text-align:center'><label for ="titulo" class ="cadastroUser">Email:</label><br><br>
+        <input type="text" name="email" class="adicionar" size="40" value="<%-email%>" placeholder="Informe o seu e-mail">
+    </p>
+    <br>
+    <p>
+        <div style='text-align:center'><label for="datanasc" class="cadastroUser">Data de nascimento:</label><br><br>
+        <input type="date" name="data" value="<%-dataNasc%>" id="datanascimento" class="adicionar">
+    </p>
+    <br>
+    <p>
+        <div style='text-align:center'><label for="senha" class="cadastroUser">Senha:</label><br><br>
+        <div style='text-align:center'><input type="password" name ="senha" id="senha" size="40"  maxlength="20" placeholder="Crie uma nova senha"></input></div>
+    </p>
+    <br>
+    <br>
+    <div style="text-align: center"><input type="submit" value="Cadastrar" class="botao-cadastrar"></div>
+    <br>
+    <br>
+</form>
+</body>
+</html>
