@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ResenhaFlix</title>
+    <link type="text/css" rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <br>
+    <br>
+    <div style="text-align: center;"><a href="/login"><img  src="imagens/ResenhaFlix.png"
+            id="banner" height="110"></a></div>
+    <br>
+    <br>
+    <div style='text-align:center'>
+        <h3 class="cadastrofilme-pag">Usuários encontradas:</h3>
+        <br>
+        <br>
+        <nav>
+
+
+            <%for(var i=0; i < user.length; i++) {%>
+                <div style="display: flex; gap: 12px; align-items: center;">
+                    <h3 class="barra2">
+                      
+                        <%-  user[i] %>
+                        <br>
+                    </h3>
+                </div>
+            <%}%>
+
+
+
+
+                    <div style="display: flex; gap: 12px;">
+                    </div>
+    </div>
+
+    </nav>
+
+</body>
+
+</html>
