@@ -14,23 +14,15 @@ app.set('views', __dirname);
 app.use(express.urlencoded({extended: false}));
 app.use(express.json())
 const bcrypt = require('bcrypt');
+const validaToken= require('./auth')
 const jwt = require("jsonwebtoken")
 const jwtConfig = require("./config/jwt.js")
-const verifyJWT = require("./auth.js")
+
 
 const fs = require('fs');
 const usuario = require("./models/usuario")
 const resenha = require("./models/resenha")
 
-const sequelizeInstance = new Sequelize('resenhaflix', 'root', 'root', {
-	host: 'localhost',
-	dialect: 'mysql'
-})
-sequelizeInstance.authenticate().then(function () {
-	console.log("Conectado!!")
-}).catch(function (erro) {
-	console.log("Erro ao conectar: " + erro)
-})
 
 resenha.sync({ alter: true })
 usuario.sync({ alter: true })
@@ -86,7 +78,7 @@ app.get("/", (req,res)=>{
 	res.sendFile(__dirname + "/" + "public/login.html")
 })
 
-app.post("/login",verifyJWT, urlEncodedParser, async(req,res)=>{
+app.post("/login", urlEncodedParser, async(req,res)=>{
 	
     var usuarioss = await usuario.findOne({
         where:{
@@ -100,8 +92,8 @@ app.post("/login",verifyJWT, urlEncodedParser, async(req,res)=>{
         if(senha_valida){
 			
 			token = jwt.sign({"id":usuarioss.codigo,"email":usuarioss.email,"nome":usuarioss.nome},jwtConfig.secret)
-			res.status(200).json({ token : token });
-            
+			//res.status(200).json({ token : token });
+            res.redirect("/home")
         }else{
 			res.render(__dirname + "/" + "public/erro.html",{erro: "senha incorreta"} )
         }
@@ -110,7 +102,7 @@ app.post("/login",verifyJWT, urlEncodedParser, async(req,res)=>{
     }
 })
 
-
+//app.use("*",validaToken)
 
 app.get("/home", (req, res) => {
 	res.sendFile(__dirname + "/" + "public/inicio.html")
@@ -367,24 +359,23 @@ app.get("/editarUsuario/",async (req,res)=>{
 	ub = JSON.parse(ub)
 	console.log(ub)
 	
-	var id = req.body.id
+	var id = ub.codigo
 	var nomes = ub.nome
 	var emails = ub.email
 	var dataN = ub.data
 
-	res.render(__dirname + "/public/editarUsuario.html", { nome: nomes, email: emails, dataNasc: dataN});
+	res.render(__dirname + "/public/editar-usuario.html", {codigo:id, nome: nomes, email: emails, dataNasc: dataN});
 })
-
 app.post("/editarUsuarios", async (req, res)=>{
-	var id = req.body.id
+	var id = req.body.codigo
 	var nomes = req.body.nome
 	var emails = req.body.email
 	var dataN = req.body.data
 
 	const us = {
-		nome: nomes, email: emails, dataNasc: dataN
+		 nome: nomes, email: emails, dataNasc: dataN
 	}
-	
+	console.log(id)
 	const acha = await usuario.update(us,{
 		where:{
 			codigo: id
@@ -392,6 +383,32 @@ app.post("/editarUsuarios", async (req, res)=>{
 	})
 
 	res.redirect("/home")
+})
+app.get("/buscaUsuarios",async (req,res) =>{
+	let ub = ''
+	const users = await usuario.findAll()
+	ub = users
+	ub = JSON.stringify(ub)
+	ub = JSON.parse(ub)
+	console.log(ub)
+	us = []
+	let exibicao = ''
+
+	for (var i = 0; i < ub.length; i++) {
+		
+		exibicao += "nome: " + ub[i].nome + " ";
+		exibicao += "email: " + ub[i].email + " ";
+		exibicao += "data de nascimento: " + ub[i].dataNasc + " ";
+		exibicao += `<a href="/removerUsuario/${ub[i].codigo}">remover</a>` + " ";
+		exibicao += `<a href="/editarUsuario?id=${ub[i].codigo}">editar</a>`;
+		
+		us.push(exibicao)
+		exibicao = ""
+		
+	}
+	
+	res.render(__dirname + "/public/busca-usuarios.html",{user:us})
+
 })
 
 app.listen(port, () => {

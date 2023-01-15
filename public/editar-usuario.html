@@ -8,8 +8,8 @@
     <link type="text/css" rel="stylesheet" href="style.css">
 </head>
 <body>
-    <form action="/Usuario" method="post">
-    <input type="hidden" value="<%- codigo %>">
+    <form action="/editarUsuarios" method="post">
+    
     <div style='text-align:right'><button type="button" class="sair"><a href="/login">Sair</a></button></div>
     <div style="text-align: center;"><a href="/login"><img  src="imagens/ResenhaFlix.png" id="banner" height="110"></a></div>
     <br>
@@ -17,6 +17,7 @@
     <br>
     <p>
         <div style='text-align:center'><label for ="titulo" class ="cadastroUser">Nome:</label><br><br>
+        <input type="hidden" name="codigo" value="<%-codigo%>">
         <input type="text" name="nome" class="adicionar" size="40" value="<%-nome%>" placeholder="Informe o seu nome">
     </p>
     <br>
