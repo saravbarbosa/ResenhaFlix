@@ -44,7 +44,7 @@ app.get("/", (req, res) => {
 })
 
 app.get("/cadUsuario", (req, res) => {
-	res.sendFile(__dirname + "/" + "public/adicionarUsuario.html")
+	res.sendFile(__dirname + "/" + "public/cadastro-usuario.html")
 })
 
 app.post("/Usuario", urlEncodedParser, async (req, res) => {
