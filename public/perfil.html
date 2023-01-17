@@ -23,21 +23,21 @@
         <img class="avatar" src="imagens/avatar.png" alt="Avatar">
     </div>
     <div style='text-align:center'>
-        <h4 class="cadastrofilme-pag">Nome Sobrenome</h4>
+        <h4 class="cadastrofilme-pag">Nome: <%-nome%></h4>
     </div>
     <div style='text-align:center'>
-        <h4 class="cadastrofilme-pag">Data de nascimento: 00/00/00</h4>
+        <h4 class="cadastrofilme-pag">Data de nascimento: <%=moment(data).format('DD-MM-YYYY')%></h4>
     </div>
     <div style='text-align:center'>
-        <h4 class="cadastrofilme-pag">E-mail: exemplo@gmail.com</h4>
+        <h4 class="cadastrofilme-pag">E-mail: <%-email%></h4>
     </div>
     <br>
     <div style='text-align:center'>
         <h3 class="cadastrofilme-pag">Configurações</h3>
     </div><br>
     <div style='display: flex; gap: 12px;'>
-        <input type="button" value="Editar perfil" class="botao-editar">
-        <input type="button" value="Excluir perfil" class="botao-excluir">
+       <a href="/editarUsuario?id=<%-id%>"><input type="button" width="50" value="Editar " class="botao-editar"></a>
+        <a href="/removerUsuario/<%-id%>"><input type="button" width="50" value="Excluir " class="botao-excluir"></a>
     </div>
     <br>
     <br>

@@ -11,7 +11,7 @@
     <form action="/editarUsuarios" method="post">
     
     <div style='text-align:right'><button type="button" class="sair"><a href="/login">Sair</a></button></div>
-    <div style="text-align: center;"><a href="/login"><img  src="imagens/ResenhaFlix.png" id="banner" height="110"></a></div>
+    <div style="text-align: center;"><a href="/"><img  src="imagens/ResenhaFlix.png" id="banner" height="110"></a></div>
     <br>
     <div style='text-align:center'><h3 class = "cadastrofilme-pag">Cadastro de usuário</h3>
     <br>
@@ -28,7 +28,13 @@
     <br>
     <p>
         <div style='text-align:center'><label for="datanasc" class="cadastroUser">Data de nascimento:</label><br><br>
-        <input type="date" name="data" value="<%-dataNasc%>" id="datanascimento" class="adicionar">
+        <input type="date" name="data"   id="datanascimento" class="adicionar">
+        
+        <script>
+            var datinha = document.getElementById("datanascimento")
+            datinha.value = "<%=moment(dataNasc).format('yyyy-MM-DD')%>"
+            
+        </script>
     </p>
     <br>
     <p>
