@@ -92,16 +92,15 @@ app.get('/buscaResenha',(req,res)=>{
 });
 
 app.get('/Resenha', (req,res) => {
+	
     var filme = req.query.filme
     var genero = req.query.genero
     var ano = req.query.ano
 
-    filme = filme.replaceAll(" ","")
-	genero = genero.replaceAll(" ", "")
-	ano = ano.replaceAll(" ", "")
+    filme = filme
+	genero = genero
+	ano = ano
 	
-
-		
 	fs.readFile('bd.json','utf8',(erro, texto)=>{
 		
 		if (erro)
@@ -111,30 +110,33 @@ app.get('/Resenha', (req,res) => {
 		var resenhas = meuBD.resenhas;
 		
 		if(filme.length > 0 && genero == "" && ano == ""){
-			var encontrado = resenhas.filter(p =>  p.filme.replaceAll(" ","").toLowerCase().includes(filme.toLowerCase()));
+			var encontrado = resenhas.filter(p =>  p.filme.toLowerCase().includes(filme.toLowerCase()));
 		} 
 		if (filme.length > 0 && genero.length > 0 && ano == "") {
-			var encontrado = resenhas.filter(p =>  p.filme.replaceAll(" ","").toLowerCase().includes(filme.replaceAll(" ","").toLowerCase()) && p.genero.replaceAll(" ","").toLowerCase().includes(genero.replaceAll(" ","").toLowerCase()));
+			var encontrado = resenhas.filter(p =>  p.filme.toLowerCase().includes(filme.toLowerCase()) || p.genero.toLowerCase().includes(genero.toLowerCase()));
 		}
 		if (filme.length > 0 && genero.length > 0 && ano.length > 0) {
-			var encontrado = resenhas.filter(p =>  p.filme.replaceAll(" ","").toLowerCase().includes(filme.replaceAll(" ","").toLowerCase()) && p.genero.replaceAll(" ","").toLowerCase().includes(genero.replaceAll(" ","").toLowerCase()) && p.ano.replaceAll(" ","").toLowerCase().includes(ano.replaceAll(" ","").toLowerCase()));
+			var encontrado = resenhas.filter(p =>  p.filme.toLowerCase().includes(filme.toLowerCase()) || p.genero.toLowerCase().includes(genero.toLowerCase()) || p.ano.toLowerCase().includes(ano.toLowerCase()));
 		}
 		if (filme == "" && genero.length > 0 && ano.length > 0) {
-			var encontrado = resenhas.filter(p =>  p.genero.replaceAll(" ","").toLowerCase().includes(genero.replaceAll(" ","").toLowerCase()) && p.ano.replaceAll(" ","").toLowerCase().includes(ano.replaceAll(" ","").toLowerCase()));
+			var encontrado = resenhas.filter(p =>  p.genero.toLowerCase().includes(genero.toLowerCase()) || p.ano.toLowerCase().includes(ano.toLowerCase()));
 		}
 		if (filme.length > 0 && genero == ""  && ano.length > 0) {
-			var encontrado = resenhas.filter(p =>  p.filme.replaceAll(" ","").toLowerCase().includes(filme.replaceAll(" ","").toLowerCase()) && p.ano.replaceAll(" ","").toLowerCase().includes(ano.replaceAll(" ","").toLowerCase()));
+			var encontrado = resenhas.filter(p =>  p.filme.toLowerCase().includes(filme.toLowerCase()) && p.ano.toLowerCase().includes(ano.toLowerCase()));
 		}
 		
 		if (filme == "" && genero.length > 0 && ano == "") {
-			var encontrado = resenhas.filter(p =>  p.genero.replaceAll(" ","").toLowerCase().includes(genero.replaceAll(" ","").toLowerCase()));
+			var encontrado = resenhas.filter(p =>  p.genero.toLowerCase().includes(genero.toLowerCase()));
 		}
-		
 		if (filme == '' && genero == '' && ano.length > 0) {
-			var encontrado = resenhas.filter(p => p.ano.replaceAll(" ","").toLowerCase().includes(ano.replaceAll(" ","").toLowerCase()));
+			var encontrado = resenhas.filter(p => p.ano.toLowerCase().includes(ano.toLowerCase()));
 		}
+
+		console.log(encontrado)
+
 		var exibicao = ""
 		var filmes = []
+
 		for(var i=0; i < encontrado.length;i++){
 			
 			exibicao+= "Titulo: "+encontrado[i].filme + " ";
@@ -145,8 +147,6 @@ app.get('/Resenha', (req,res) => {
 
 			filmes.push(exibicao)
 			exibicao = ""
-
-			
 		}
 		
 		res.render(__dirname + "/public/busca-realizada.html",  {filme :filmes});
